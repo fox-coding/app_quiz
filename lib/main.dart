@@ -23,7 +23,24 @@ class _MyAppState extends State<MyApp> {
     print('Antwort gewählt!');
   }
 
-  var questions = ['Was ist 2 + 3?', 'Was ist 6 x 6?'];
+  var questions = [
+    {
+      'question': 'Ist ein Zebra schwarz oder weiß?',
+      'answers': ['schwarz', 'weiß']
+    },
+    {
+      'question': 'Wie alt ist die Sphinx?',
+      'answers': ['4000 Jahre', '6000 Jahre', 'über 8000 Jahre']
+    },
+    {
+      'question': 'Wer waren die Langobarden?',
+      'answers': ['Ameisenbären', 'Indogermaner', 'Griechische Historiker']
+    },
+    {
+      'question': 'Was sind die ersten 3 Werte von Pi?',
+      'answers': ['3,12', '3,14', '3,44']
+    }
+  ];
 
   // This widget is the root of your application.
   @override
@@ -34,11 +51,11 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           children: <Widget>[
             Question(
-              questions[_questionIndex],
+              questions[_questionIndex]['question'] as String,
             ),
-            Answer(_answerQuestion),
-            Answer(_answerQuestion),
-            Answer(_answerQuestion),
+            ...(questions[_questionIndex]['answers'] as List<String>).map((answer) {
+              return Answer(_answerQuestion, answer);
+            }).toList()
           ],
         ),
       ),
