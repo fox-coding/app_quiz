@@ -10,6 +10,7 @@ class Answer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: ElevatedButton(
         child: Text(answerText),
         onPressed: selectHandler,

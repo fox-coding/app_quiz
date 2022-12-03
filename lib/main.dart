@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './question.dart';
-import './answer.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,32 +15,54 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
+  var _totalScore = 0;
+
+  final _questions = const [
+    {
+      'question': 'Ist ein Zebra schwarz oder weiß?',
+      'answers': [
+        {'text': 'schwarz', 'score': 25},
+        {'text': 'weiß', 'score': 0}
+      ]
+    },
+    {
+      'question': 'Wie alt ist die Sphinx?',
+      'answers': [
+        {'text': '4000 Jahre', 'score': 0},
+        {'text': '6000 Jahre', 'score': 0},
+        {'text': 'über 8000 Jahre', 'score': 25}
+      ]
+    },
+    {
+      'question': 'Wer waren die Langobarden?',
+      'answers': [
+        {'text': 'Ameisenbären', 'score': 0},
+        {'text': 'Indogermaner', 'score': 25},
+        {'text': 'Griechische Historiker', 'score': 0}
+      ]
+    },
+    {
+      'question': 'Was sind die ersten 3 Werte von Pi?',
+      'answers': [
+        {'text': '3,12', 'score': 0},
+        {'text': '3,14', 'score': 25},
+        {'text': '3,44', 'score': 0}
+      ]
+    }
+  ];
 
   void _answerQuestion() {
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
-    print('Antwort gewählt!');
   }
 
-  var questions = [
-    {
-      'question': 'Ist ein Zebra schwarz oder weiß?',
-      'answers': ['schwarz', 'weiß']
-    },
-    {
-      'question': 'Wie alt ist die Sphinx?',
-      'answers': ['4000 Jahre', '6000 Jahre', 'über 8000 Jahre']
-    },
-    {
-      'question': 'Wer waren die Langobarden?',
-      'answers': ['Ameisenbären', 'Indogermaner', 'Griechische Historiker']
-    },
-    {
-      'question': 'Was sind die ersten 3 Werte von Pi?',
-      'answers': ['3,12', '3,14', '3,44']
-    }
-  ];
+  void _resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+    });
+  }
 
   // This widget is the root of your application.
   @override
@@ -48,16 +70,12 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: Text("Quiz APP")),
-        body: Column(
-          children: <Widget>[
-            Question(
-              questions[_questionIndex]['question'] as String,
-            ),
-            ...(questions[_questionIndex]['answers'] as List<String>).map((answer) {
-              return Answer(_answerQuestion, answer);
-            }).toList()
-          ],
-        ),
+        body: _questionIndex < _questions.length
+            ? Quiz(
+                questions: _questions,
+                answerQuestion: _answerQuestion,
+                questionIndex: _questionIndex)
+            : Result(_resetQuiz),
       ),
     );
   }
